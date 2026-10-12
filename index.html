@@ -12,7 +12,37 @@
   <script src="app.js" defer></script>
 </head>
 <body>
-  <div class="app-shell">
+  <div class="login-screen" id="login-screen" aria-label="Student login screen">
+    <div class="login-card">
+      <div class="login-header">
+        <p class="eyebrow">WELCOME BACK</p>
+        <h1>Sign in to your study dashboard<span class="title-period">.</span></h1>
+      </div>
+
+      <form id="login-form" novalidate>
+        <label class="form-field">
+          Username
+          <input id="login-username" name="username" type="text" autocomplete="username" placeholder="Enter your username" required>
+        </label>
+
+        <label class="form-field">
+          Password
+          <span class="password-input-wrap">
+            <input id="login-password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required>
+            <button class="password-visibility-toggle" id="password-visibility-toggle" type="button" aria-label="Show password" aria-pressed="false">
+              <svg class="eye-icon eye-icon-show" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+              <svg class="eye-icon eye-icon-hide" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18M10.6 6.2A10.8 10.8 0 0 1 12 6c6.1 0 9.5 6 9.5 6a16 16 0 0 1-3.1 3.7M6.2 6.2C3.8 7.7 2.5 12 2.5 12s3.4 6 9.5 6c1.1 0 2.1-.2 3-.5"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+            </button>
+          </span>
+        </label>
+
+        <button class="button button-primary login-button" type="submit">Sign In <span aria-hidden="true">→</span></button>
+        <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="app-shell hidden" id="app-shell">
     <aside class="sidebar" aria-label="Main navigation">
       <a class="brand" href="#" aria-label="Studyspace home">
         <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4.75A1.75 1.75 0 0 1 6.75 3h10.5A1.75 1.75 0 0 1 19 4.75v14.5A1.75 1.75 0 0 1 17.25 21H6.75A1.75 1.75 0 0 1 5 19.25V4.75Z"/><path d="M8.5 7.5h7M8.5 11.5h7M8.5 15.5h4"/></svg></span>
@@ -56,7 +86,7 @@
     <main class="main-content">
       <header class="topbar">
         <div class="breadcrumb"><span>Workspace</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">All tasks</strong></div>
-        <div class="topbar-right"><span class="today-date" id="header-date"></span><span class="top-avatar" aria-label="Student profile">S</span></div>
+        <div class="topbar-right"><span class="today-date" id="header-date"></span><button class="notification-button" id="open-notifications-button" type="button" aria-haspopup="dialog" aria-controls="notifications-dialog" aria-expanded="false" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg><span class="notification-count" id="notification-count" aria-live="polite">0</span></button><button class="button button-quiet profile-topbar-button" id="open-profile-button" type="button" aria-haspopup="dialog" aria-controls="profile-dialog">Profile</button><span class="top-avatar" aria-label="Student profile">S</span></div>
       </header>
 
       <div class="content-wrap">
@@ -64,16 +94,89 @@
           <div>
             <p class="eyebrow" id="welcome-date">YOUR STUDY SPACE</p>
             <h1 id="page-title">All tasks<span class="title-period">.</span></h1>
-            <p class="page-subtitle" id="page-subtitle">A little progress each day adds up to big results.</p>
+            <p class="page-subtitle" id="page-subtitle">Welcome back, <span id="student-name">Student</span>. A little progress each day adds up to big results.</p>
           </div>
           <button class="button button-primary add-task-button" id="add-task-button" type="button"><span class="plus">+</span> Add a task</button>
         </section>
 
-        <section class="stats-grid" aria-label="Task overview">
-          <article class="stat-card stat-total"><div class="stat-top"><span class="stat-label">Total tasks</span><span class="stat-icon"><svg viewBox="0 0 24 24"><path d="M7 5h10M7 9h10M7 13h6M5 3.5h14v17H5z"/></svg></span></div><div class="stat-value" id="total-stat">0</div><div class="stat-note">in your workspace</div></article>
-          <article class="stat-card stat-progress"><div class="stat-top"><span class="stat-label">In progress</span><span class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></span></div><div class="stat-value" id="progress-stat">0</div><div class="stat-note">ready when you are</div></article>
-          <article class="stat-card stat-done"><div class="stat-top"><span class="stat-label">Completed</span><span class="stat-icon"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4L19 7"/></svg></span></div><div class="stat-value" id="done-stat">0</div><div class="stat-note"><span id="completion-rate">0%</span> of your tasks</div></article>
-          <article class="stat-card stat-due"><div class="stat-top"><span class="stat-label">Due today</span><span class="stat-icon"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg></span></div><div class="stat-value" id="due-stat">0</div><div class="stat-note">keep an eye on these</div></article>
+        <section class="stats-grid" aria-label="Student dashboard overview">
+          <article class="stat-card stat-total"><div class="stat-top"><span class="stat-label">Attendance</span><span class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8 12 2.5 2.5L16.5 8"/></svg></span></div><div class="stat-value" id="attendance-stat">Coming in Stage 4</div><div class="stat-note" id="attendance-note">Attendance summary is being prepared.</div></article>
+          <article class="stat-card stat-progress"><div class="stat-top"><span class="stat-label">Pending tasks</span><span class="stat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></span></div><div class="stat-value" id="pending-task-stat">0</div><div class="stat-note">still in progress</div></article>
+          <article class="stat-card stat-done"><div class="stat-top"><span class="stat-label">Completed tasks</span><span class="stat-icon"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4L19 7"/></svg></span></div><div class="stat-value" id="completed-task-stat">0</div><div class="stat-note">nice work so far</div></article>
+          <article class="stat-card stat-due"><div class="stat-top"><span class="stat-label">Upcoming deadlines</span><span class="stat-icon"><svg viewBox="0 0 24 24"><rect x="4" y="5.5" width="16" height="15" rx="2"/><path d="M8 3.5v4M16 3.5v4M4 10h16"/></svg></span></div><div class="stat-value" id="upcoming-deadline-stat">0</div><div class="stat-note">due today or later</div></article>
+        </section>
+
+        <section class="marks-section" aria-labelledby="marks-title">
+          <div class="marks-heading">
+            <div>
+              <h2 id="marks-title">Marks &amp; Grade Tracker</h2>
+              <p>Subject-wise demo marks. Grade scale: A 90%+, B 80%+, C 70%+, D 60%+, F below 60%.</p>
+            </div>
+            <div class="marks-overall" aria-live="polite">
+              <span>Overall result</span>
+              <strong id="overall-marks-percentage">0%</strong>
+              <span id="overall-marks-grade">Grade —</span>
+            </div>
+          </div>
+          <div class="marks-table-wrap">
+            <table class="marks-table">
+              <thead>
+                <tr><th scope="col">Subject</th><th scope="col">Marks</th><th scope="col">Percentage</th><th scope="col">Grade</th></tr>
+              </thead>
+              <tbody id="marks-rows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="attendance-section" aria-labelledby="attendance-title">
+          <div class="attendance-heading">
+            <div>
+              <h2 id="attendance-title">Attendance</h2>
+              <p>Subject-wise class attendance for this semester.</p>
+            </div>
+            <div class="attendance-overall">
+              <span class="attendance-overall-label">Overall</span>
+              <strong id="attendance-overall-value">0%</strong>
+              <span class="attendance-overall-count" id="attendance-overall-count">0 of 0 classes attended</span>
+            </div>
+          </div>
+          <p class="attendance-alert" id="attendance-alert" role="status" aria-live="polite"></p>
+          <div class="attendance-subjects" id="attendance-subjects"></div>
+
+          <section class="attendance-history-section" aria-labelledby="attendance-history-title">
+            <div class="attendance-subsection-heading">
+              <div>
+                <h3 id="attendance-history-title">Attendance History</h3>
+                <p>Demo records for this semester; these are not official college records.</p>
+              </div>
+              <label class="attendance-history-filter">
+                <span class="sr-only">Filter attendance history by subject</span>
+                <select id="attendance-history-filter" aria-label="Filter attendance history by subject">
+                  <option value="all">All subjects</option>
+                </select>
+              </label>
+            </div>
+            <div class="attendance-history-table-wrap">
+              <table class="attendance-history-table">
+                <thead>
+                  <tr><th scope="col">Subject</th><th scope="col">Class date</th><th scope="col">Status</th></tr>
+                </thead>
+                <tbody id="attendance-history-rows"></tbody>
+              </table>
+            </div>
+            <p class="attendance-history-empty" id="attendance-history-empty" hidden>No attendance history for this subject.</p>
+          </section>
+
+          <section class="attendance-calculator-section" aria-labelledby="attendance-calculator-title">
+            <div class="attendance-subsection-heading">
+              <div>
+                <h3 id="attendance-calculator-title">75% Attendance Calculator</h3>
+                <p>See how many consecutive classes you need to attend to reach the threshold.</p>
+              </div>
+            </div>
+            <p class="attendance-calculator-note">This estimate assumes you attend every upcoming class. It is for planning only and does not change your saved attendance.</p>
+            <div class="attendance-calculator-list" id="attendance-calculator-list"></div>
+          </section>
         </section>
 
         <section class="tasks-section">
@@ -91,6 +194,53 @@
       </div>
     </main>
   </div>
+
+  <dialog class="profile-dialog" id="profile-dialog" aria-labelledby="profile-dialog-title">
+    <div class="profile-dialog-content">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">YOUR ACCOUNT</p>
+          <h2 id="profile-dialog-title">Profile &amp; Settings</h2>
+        </div>
+        <button class="icon-button close-profile-dialog" id="close-profile-dialog" type="button" aria-label="Close profile and settings">×</button>
+      </div>
+      <section class="profile-details" aria-labelledby="profile-details-title">
+        <h3 id="profile-details-title">Student profile</h3>
+        <dl>
+          <div><dt>Full name</dt><dd id="profile-full-name"></dd></div>
+          <div><dt>Username</dt><dd id="profile-username"></dd></div>
+          <div><dt>Student ID</dt><dd id="profile-student-id"></dd></div>
+        </dl>
+      </section>
+      <section class="profile-settings" aria-labelledby="profile-settings-title">
+        <h3 id="profile-settings-title">Settings</h3>
+        <label class="theme-setting" for="dark-theme-toggle">
+          <span>
+            <strong>Dark theme</strong>
+            <span>Use a darker color theme for your dashboard.</span>
+          </span>
+          <input id="dark-theme-toggle" type="checkbox" role="switch" aria-label="Dark theme">
+        </label>
+      </section>
+      <p class="profile-logout-error" id="profile-logout-error" role="alert" aria-live="polite"></p>
+      <div class="profile-dialog-actions">
+        <button class="button button-logout" id="logout-button" type="button">Logout</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="notifications-dialog" id="notifications-dialog" aria-labelledby="notifications-title">
+    <div class="notifications-content">
+      <div class="dialog-header">
+        <div>
+          <p class="eyebrow">YOUR UPDATES</p>
+          <h2 id="notifications-title">Notifications</h2>
+        </div>
+        <button class="icon-button" id="close-notifications-dialog" type="button" aria-label="Close notifications">×</button>
+      </div>
+      <ul class="notification-list" id="notification-list" aria-live="polite"></ul>
+    </div>
+  </dialog>
 
   <dialog class="task-dialog" id="task-dialog" aria-labelledby="dialog-title">
     <form id="task-form">
